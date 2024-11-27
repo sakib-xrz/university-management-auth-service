@@ -161,4 +161,7 @@ StudentSchema.statics.isUserExists = async function (id: string) {
   return existingUser;
 };
 
-export const Student = mongoose.model('Student', StudentSchema);
+export const Student = mongoose.model<StudentsInterface>(
+  'Student',
+  StudentSchema,
+);
