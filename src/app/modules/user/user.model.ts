@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { UsersInterface } from './users.interface';
+import { UserInterface } from './user.interface';
 
-const UsersSchema = new mongoose.Schema<UsersInterface>(
+const UserSchema = new mongoose.Schema<UserInterface>(
   {
     id: {
       type: String,
@@ -43,4 +43,4 @@ const UsersSchema = new mongoose.Schema<UsersInterface>(
   },
 );
 
-export const Users = mongoose.model('Users', UsersSchema);
+export const User = mongoose.model<UserInterface>('User', UserSchema);

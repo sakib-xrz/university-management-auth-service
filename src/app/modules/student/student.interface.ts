@@ -16,7 +16,7 @@ export type LocalGuardianType = {
   address: string;
 };
 
-export interface StudentsInterface {
+export interface StudentInterface {
   id: string;
   user: Types.ObjectId;
   name: {

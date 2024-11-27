@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import {
   GuardianType,
   LocalGuardianType,
-  StudentsInterface,
+  StudentInterface,
 } from './student.interface';
 
 const GuardianSchema = new mongoose.Schema<GuardianType>({
@@ -51,7 +51,7 @@ const LocalGuardianSchema = new mongoose.Schema<LocalGuardianType>({
   },
 });
 
-const StudentSchema = new mongoose.Schema<StudentsInterface>(
+const StudentSchema = new mongoose.Schema<StudentInterface>(
   {
     id: {
       type: String,
@@ -161,7 +161,7 @@ StudentSchema.statics.isUserExists = async function (id: string) {
   return existingUser;
 };
 
-export const Student = mongoose.model<StudentsInterface>(
+export const Student = mongoose.model<StudentInterface>(
   'Student',
   StudentSchema,
 );
