@@ -115,7 +115,6 @@ const StudentsSchema = new mongoose.Schema<StudentsInterface>(
     },
     profileImage: {
       type: String,
-      required: true,
     },
     isDeleted: {
       type: Boolean,

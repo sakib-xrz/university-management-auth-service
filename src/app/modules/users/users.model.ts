@@ -26,6 +26,7 @@ const UsersSchema = new mongoose.Schema<UsersInterface>(
       type: String,
       required: true,
       enum: ['ACTIVE', 'BLOCKED'],
+      default: 'ACTIVE',
     },
     isDeleted: {
       type: Boolean,
