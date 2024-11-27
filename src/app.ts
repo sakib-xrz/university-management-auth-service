@@ -1,10 +1,9 @@
-import { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import httpStatus from 'http-status';
 import router from './app/routes';
+import { notFound } from './app/middlewares/notFound';
 
 const app = express();
 
@@ -26,18 +25,6 @@ app.use(
 app.use('/api/v1', router);
 
 // handle not found routes
-app.use((req: Request, res: Response, next: NextFunction) => {
-  res.status(httpStatus.NOT_FOUND).json({
-    success: false,
-    message: 'API Not Found!',
-    errorMessages: [
-      {
-        path: req.originalUrl,
-        message: `The requested API route ${req.originalUrl} was not found`,
-      },
-    ],
-  });
-  next();
-});
+app.use(notFound);
 
 export default app;
