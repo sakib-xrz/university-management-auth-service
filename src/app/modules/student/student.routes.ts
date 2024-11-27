@@ -4,4 +4,4 @@ const router = express.Router();
 
 router.get('/');
 
-export const StudentsRoutes = router;
+export const StudentRoutes = router;

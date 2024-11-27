@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
-import { StudentsInterface, LocalGuardianType } from './students.interface';
+import {
+  GuardianType,
+  LocalGuardianType,
+  StudentsInterface,
+} from './student.interface';
 
-const GuardianSchema = new mongoose.Schema({
+const GuardianSchema = new mongoose.Schema<GuardianType>({
   fatherName: {
     type: String,
     required: true,
@@ -47,7 +51,7 @@ const LocalGuardianSchema = new mongoose.Schema<LocalGuardianType>({
   },
 });
 
-const StudentsSchema = new mongoose.Schema<StudentsInterface>(
+const StudentSchema = new mongoose.Schema<StudentsInterface>(
   {
     id: {
       type: String,
@@ -130,4 +134,31 @@ const StudentsSchema = new mongoose.Schema<StudentsInterface>(
   },
 );
 
-export const Students = mongoose.model('Students', StudentsSchema);
+// virtual
+StudentSchema.virtual('fullName').get(function () {
+  return this.name.firstName + this.name.middleName + this.name.lastName;
+});
+
+// Query Middleware
+StudentSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+StudentSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+StudentSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
+
+//creating a custom static method
+StudentSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await Student.findOne({ id });
+  return existingUser;
+};
+
+export const Student = mongoose.model('Student', StudentSchema);
