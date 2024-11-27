@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import { NextFunction, Request, Response } from 'express';
 
-export const notFound = (req: Request, res: Response, next: NextFunction) => {
+const notFound = (req: Request, res: Response, next: NextFunction) => {
   res.status(httpStatus.NOT_FOUND).json({
     success: false,
     message: 'API Not Found!',
@@ -14,3 +14,5 @@ export const notFound = (req: Request, res: Response, next: NextFunction) => {
   });
   next();
 };
+
+export default notFound;

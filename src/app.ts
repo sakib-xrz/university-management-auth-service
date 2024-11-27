@@ -3,7 +3,8 @@ import morgan from 'morgan';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import router from './app/routes';
-import { notFound } from './app/middlewares/notFound';
+import notFound from './app/middlewares/notFound';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
 
 const app = express();
 
@@ -23,6 +24,9 @@ app.use(
 
 // application routes
 app.use('/api/v1', router);
+
+//global error handler
+app.use(globalErrorHandler);
 
 // handle not found routes
 app.use(notFound);
