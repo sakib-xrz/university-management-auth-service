@@ -1,1 +1,3 @@
-export const AcademicSemesterUtils = {};
+const AcademicSemesterUtils = {};
+
+export default AcademicSemesterUtils;

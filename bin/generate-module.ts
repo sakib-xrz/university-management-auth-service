@@ -20,24 +20,24 @@ const generateModule = (moduleName: string): void => {
   }
 
   const files: Record<string, string> = {
-    [`${moduleName}.constant.ts`]: `export const ${capitalize(
+    [`${moduleName}.constant.ts`]: `const ${capitalize(
       moduleName,
-    )}Constants = {};`,
+    )}Constants = {};\n\nexport default ${capitalize(moduleName)}Constants;`,
     [`${moduleName}.interface.ts`]: `export interface ${capitalize(
       moduleName,
     )}Interface {}`,
-    [`${moduleName}.controller.ts`]: `export const ${capitalize(
+    [`${moduleName}.controller.ts`]: `const ${capitalize(
       moduleName,
-    )}Controller = {};`,
-    [`${moduleName}.services.ts`]: `export const ${capitalize(
+    )}Controller = {};\n\nexport default ${capitalize(moduleName)}Controller;`,
+    [`${moduleName}.services.ts`]: `const ${capitalize(
       moduleName,
-    )}Service = {};`,
+    )}Service = {};\n\nexport default ${capitalize(moduleName)}Service;`,
     [`${moduleName}.routes.ts`]: `import express from 'express';\n\nconst router = express.Router();\n\nrouter.get('/');\n\nexport const ${capitalize(
       moduleName,
     )}Routes = router;`,
-    [`${moduleName}.validation.ts`]: `export const ${capitalize(
+    [`${moduleName}.validation.ts`]: `const ${capitalize(
       moduleName,
-    )}Validation = {};`,
+    )}Validation = {};\n\nexport default ${capitalize(moduleName)}Validation;`,
     [`${moduleName}.model.ts`]: `import mongoose from 'mongoose';\n\nconst ${capitalize(
       moduleName,
     )}Schema = new mongoose.Schema({});\n\nexport const ${capitalize(
@@ -45,9 +45,9 @@ const generateModule = (moduleName: string): void => {
     )} = mongoose.model('${capitalize(moduleName)}', ${capitalize(
       moduleName,
     )}Schema);`,
-    [`${moduleName}.utils.ts`]: `export const ${capitalize(
+    [`${moduleName}.utils.ts`]: `const ${capitalize(
       moduleName,
-    )}Utils = {};`,
+    )}Utils = {};\n\nexport default ${capitalize(moduleName)}Utils;`,
   };
 
   fs.ensureDirSync(folderPath);

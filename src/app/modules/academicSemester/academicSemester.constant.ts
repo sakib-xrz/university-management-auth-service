@@ -34,9 +34,11 @@ const AcademicSemesterNameCodeMapper: AcademicSemesterNameCodeMapperType = {
   Fall: '03',
 };
 
-export const AcademicSemesterConstants = {
+const AcademicSemesterConstants = {
   Months,
   AcademicSemesterName,
   AcademicSemesterCode,
   AcademicSemesterNameCodeMapper,
 };
+
+export default AcademicSemesterConstants;

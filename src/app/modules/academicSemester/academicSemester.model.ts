@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
 import { AcademicSemesterInterface } from './academicSemester.interface';
-import { AcademicSemesterConstants } from './academicSemester.constant';
-import ApiError from '../../errors/ApiError';
+import AcademicSemesterConstants from './academicSemester.constant';
+import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
+
+const { Months } = AcademicSemesterConstants;
 
 const AcademicSemesterSchema = new mongoose.Schema<AcademicSemesterInterface>(
   {
@@ -23,12 +25,12 @@ const AcademicSemesterSchema = new mongoose.Schema<AcademicSemesterInterface>(
     startMonth: {
       type: String,
       required: true,
-      enum: AcademicSemesterConstants.Months,
+      enum: Months,
     },
     endMonth: {
       type: String,
       required: true,
-      enum: AcademicSemesterConstants.Months,
+      enum: Months,
     },
   },
   {
@@ -47,7 +49,7 @@ AcademicSemesterSchema.pre('save', async function (next) {
   });
 
   if (isSemesterExistOnSameYear) {
-    throw new ApiError(
+    throw new AppError(
       httpStatus.BAD_REQUEST,
       'Semester already exist on this year',
     );
