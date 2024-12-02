@@ -1,1 +1,3 @@
-export const StudentValidation = {};
+const StudentValidation = {};
+
+export default StudentValidation;

@@ -1,1 +1,3 @@
-export const StudentConstants = {};
+const StudentConstants = {};
+
+export default StudentConstants;

@@ -1,1 +1,3 @@
-export const StudentService = {};
+const StudentService = {};
+
+export default StudentService;

@@ -1,1 +1,3 @@
-export const StudentController = {};
+const StudentController = {};
+
+export default StudentController;

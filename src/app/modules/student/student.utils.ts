@@ -1,1 +1,3 @@
-export const StudentUtils = {};
+const StudentUtils = {};
+
+export default StudentUtils;
