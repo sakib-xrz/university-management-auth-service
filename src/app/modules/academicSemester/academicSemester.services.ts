@@ -21,6 +21,50 @@ const CreateAcademicSemester = async (
   return result;
 };
 
-const AcademicSemesterService = { CreateAcademicSemester };
+const GetAcademicSemesters = async () => {
+  const academicSemesters = await AcademicSemester.find({});
+  return academicSemesters;
+};
+
+const GetAcademicSemesterById = async (academicSemesterId: string) => {
+  const academicSemester = await AcademicSemester.findById(academicSemesterId);
+  if (!academicSemester) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Academic Semester not found');
+  }
+  return academicSemester;
+};
+
+const UpdateAcademicSemester = async (
+  academicSemesterId: string,
+  academicSemesterData: AcademicSemesterInterface,
+) => {
+  const academicSemester = await AcademicSemester.findById(academicSemesterId);
+  if (!academicSemester) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Academic Semester not found');
+  }
+  if (
+    AcademicSemesterConstants.AcademicSemesterNameCodeMapper[
+      academicSemesterData.name
+    ]
+  ) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Academic Semester name doesn't match with the code",
+    );
+  }
+  const result = await AcademicSemester.findByIdAndUpdate(
+    academicSemesterId,
+    academicSemesterData,
+    { new: true, runValidators: true },
+  );
+  return result;
+};
+
+const AcademicSemesterService = {
+  CreateAcademicSemester,
+  GetAcademicSemesters,
+  GetAcademicSemesterById,
+  UpdateAcademicSemester,
+};
 
 export default AcademicSemesterService;

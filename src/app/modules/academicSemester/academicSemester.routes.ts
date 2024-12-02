@@ -5,10 +5,14 @@ import AcademicSemesterController from './academicSemester.controller';
 
 const router = express.Router();
 
-router.get(
-  '/',
-  validateRequest(AcademicSemesterValidation.CreateAcademicSemester),
-  AcademicSemesterController.CreateAcademicSemester,
-);
+router
+  .route('/')
+  .post(
+    validateRequest(AcademicSemesterValidation.CreateAcademicSemester),
+    AcademicSemesterController.CreateAcademicSemester,
+  )
+  .get(AcademicSemesterController.GetAcademicSemesters);
+
+router.route('/:id').get(AcademicSemesterController.GetAcademicSemesterById);
 
 export const AcademicSemesterRoutes = router;
