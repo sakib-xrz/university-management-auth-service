@@ -112,4 +112,6 @@ const CreateStudent = z.object({
   }),
 });
 
-export const UserValidation = { CreateStudent };
+const UserValidation = { CreateStudent };
+
+export default UserValidation;

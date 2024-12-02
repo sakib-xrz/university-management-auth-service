@@ -1,1 +1,3 @@
-export const UserController = {};
+const UserController = {};
+
+export default UserController;

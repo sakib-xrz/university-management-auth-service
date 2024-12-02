@@ -1,1 +1,3 @@
-export const UserConstants = {};
+const UserConstants = {};
+
+export default UserConstants;

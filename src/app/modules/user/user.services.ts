@@ -1,1 +1,3 @@
-export const UserService = {};
+const UserService = {};
+
+export default UserService;

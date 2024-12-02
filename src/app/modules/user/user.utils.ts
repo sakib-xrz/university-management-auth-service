@@ -1,1 +1,3 @@
-export const UserUtils = {};
+const UserUtils = {};
+
+export default UserUtils;
