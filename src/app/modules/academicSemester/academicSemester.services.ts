@@ -8,9 +8,10 @@ const CreateAcademicSemester = async (
   academicSemesterData: AcademicSemesterInterface,
 ) => {
   if (
+    academicSemesterData.name &&
     AcademicSemesterConstants.AcademicSemesterNameCodeMapper[
       academicSemesterData.name
-    ]
+    ] !== academicSemesterData.code
   ) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
@@ -36,22 +37,25 @@ const GetAcademicSemesterById = async (academicSemesterId: string) => {
 
 const UpdateAcademicSemester = async (
   academicSemesterId: string,
-  academicSemesterData: AcademicSemesterInterface,
+  academicSemesterData: Partial<AcademicSemesterInterface>,
 ) => {
   const academicSemester = await AcademicSemester.findById(academicSemesterId);
   if (!academicSemester) {
     throw new AppError(httpStatus.NOT_FOUND, 'Academic Semester not found');
   }
+
   if (
+    academicSemesterData.name &&
     AcademicSemesterConstants.AcademicSemesterNameCodeMapper[
       academicSemesterData.name
-    ]
+    ] !== academicSemesterData.code
   ) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       "Academic Semester name doesn't match with the code",
     );
   }
+
   const result = await AcademicSemester.findByIdAndUpdate(
     academicSemesterId,
     academicSemesterData,

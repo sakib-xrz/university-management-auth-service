@@ -13,6 +13,12 @@ router
   )
   .get(AcademicSemesterController.GetAcademicSemesters);
 
-router.route('/:id').get(AcademicSemesterController.GetAcademicSemesterById);
+router
+  .route('/:id')
+  .get(AcademicSemesterController.GetAcademicSemesterById)
+  .patch(
+    validateRequest(AcademicSemesterValidation.UpdateAcademicSemester),
+    AcademicSemesterController.UpdateAcademicSemester,
+  );
 
 export const AcademicSemesterRoutes = router;
