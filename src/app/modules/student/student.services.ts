@@ -2,6 +2,8 @@ import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { Student } from './student.model';
 import { StudentInterface } from './student.interface';
+import mongoose from 'mongoose';
+import { User } from '../user/user.model';
 
 const GetStudents = async () => {
   const students = await Student.find();
@@ -67,6 +69,53 @@ const UpdateStudent = async (
   return updatedStudent;
 };
 
-const StudentService = { GetStudents, GetStudentById, UpdateStudent };
+const DeleteStudent = async (id: string) => {
+  const student = await Student.findOne({ id });
+
+  if (!student) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Student not found');
+  }
+
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    const deletedStudent = await Student.findOneAndUpdate(
+      { id },
+      { isDeleted: true },
+      { new: true, runValidators: true, session },
+    );
+
+    if (!deletedStudent) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete student');
+    }
+
+    const user = await User.findOneAndUpdate(
+      { id: student.id },
+      { isDeleted: true },
+      { new: true, runValidators: true, session },
+    );
+
+    if (!user) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete user');
+    }
+
+    await session.commitTransaction();
+    session.endSession();
+  } catch (error: unknown) {
+    await session.abortTransaction();
+    session.endSession();
+    const errorMessage = (error as Error).message || 'Internal server error';
+    throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, errorMessage);
+  }
+};
+
+const StudentService = {
+  GetStudents,
+  GetStudentById,
+  UpdateStudent,
+  DeleteStudent,
+};
 
 export default StudentService;

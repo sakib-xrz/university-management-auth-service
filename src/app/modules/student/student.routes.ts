@@ -13,6 +13,7 @@ router
   .patch(
     validateRequest(StudentValidation.UpdateStudent),
     StudentController.UpdateStudent,
-  );
+  )
+  .delete(StudentController.DeleteStudent);
 
 export const StudentRoutes = router;
