@@ -64,49 +64,64 @@ const CreateStudent = z.object({
         required_error: 'Permanent address is required',
         invalid_type_error: 'Permanent address must be a string',
       }),
-      guardian: z.object({
-        fatherName: z.string({
-          required_error: 'Father name is required',
-          invalid_type_error: 'Father name must be a string',
-        }),
-        fatherOccupation: z.string({
-          required_error: 'Father occupation is required',
-          invalid_type_error: 'Father occupation must be a string',
-        }),
-        fatherContactNo: z.string({
-          required_error: 'Father contact number is required',
-          invalid_type_error: 'Father contact number must be a string',
-        }),
-        motherName: z.string({
-          required_error: 'Mother name is required',
-          invalid_type_error: 'Mother name must be a string',
-        }),
-        motherOccupation: z.string({
-          required_error: 'Mother occupation is required',
-          invalid_type_error: 'Mother occupation must be a string',
-        }),
-        motherContactNo: z.string({
-          required_error: 'Mother contact number is required',
-          invalid_type_error: 'Mother contact number must be a string',
-        }),
-      }),
-      localGuardian: z.object({
-        name: z.string({
-          required_error: 'Local guardian name is required',
-          invalid_type_error: 'Local guardian name must be a string',
-        }),
-        occupation: z.string({
-          required_error: 'Local guardian occupation is required',
-          invalid_type_error: 'Local guardian occupation must be a string',
-        }),
-        contactNo: z.string({
-          required_error: 'Local guardian contact number is required',
-          invalid_type_error: 'Local guardian contact number must be a string',
-        }),
-        address: z.string({
-          required_error: 'Local guardian address is required',
-          invalid_type_error: 'Local guardian address must be a string',
-        }),
+      guardian: z.object(
+        {
+          fatherName: z.string({
+            required_error: 'Father name is required',
+            invalid_type_error: 'Father name must be a string',
+          }),
+          fatherOccupation: z.string({
+            required_error: 'Father occupation is required',
+            invalid_type_error: 'Father occupation must be a string',
+          }),
+          fatherContactNo: z.string({
+            required_error: 'Father contact number is required',
+            invalid_type_error: 'Father contact number must be a string',
+          }),
+          motherName: z.string({
+            required_error: 'Mother name is required',
+            invalid_type_error: 'Mother name must be a string',
+          }),
+          motherOccupation: z.string({
+            required_error: 'Mother occupation is required',
+            invalid_type_error: 'Mother occupation must be a string',
+          }),
+          motherContactNo: z.string({
+            required_error: 'Mother contact number is required',
+            invalid_type_error: 'Mother contact number must be a string',
+          }),
+        },
+        {
+          required_error: 'Guardian details are required',
+        },
+      ),
+      localGuardian: z.object(
+        {
+          name: z.string({
+            required_error: 'Local guardian name is required',
+            invalid_type_error: 'Local guardian name must be a string',
+          }),
+          occupation: z.string({
+            required_error: 'Local guardian occupation is required',
+            invalid_type_error: 'Local guardian occupation must be a string',
+          }),
+          contactNo: z.string({
+            required_error: 'Local guardian contact number is required',
+            invalid_type_error:
+              'Local guardian contact number must be a string',
+          }),
+          address: z.string({
+            required_error: 'Local guardian address is required',
+            invalid_type_error: 'Local guardian address must be a string',
+          }),
+        },
+        {
+          required_error: 'Local guardian details are required',
+        },
+      ),
+      admissionSemester: z.string({
+        required_error: 'Admission semester is required',
+        invalid_type_error: 'Admission semester must be a string',
       }),
     }),
   }),

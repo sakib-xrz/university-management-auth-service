@@ -119,6 +119,12 @@ const StudentSchema = new mongoose.Schema<StudentInterface>(
     },
     profileImage: {
       type: String,
+      default: '',
+    },
+    admissionSemester: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'AcademicSemester',
+      required: true,
     },
     isDeleted: {
       type: Boolean,
