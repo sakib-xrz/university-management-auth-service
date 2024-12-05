@@ -26,6 +26,19 @@ const GetStudentById = catchAsync(async (req, res) => {
   });
 });
 
-const StudentController = { GetStudents, GetStudentById };
+const UpdateStudent = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const updatedStudentData = req.body;
+  const result = await StudentService.UpdateStudent(id, updatedStudentData);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student updated successfully',
+    data: result,
+  });
+});
+
+const StudentController = { GetStudents, GetStudentById, UpdateStudent };
 
 export default StudentController;

@@ -144,7 +144,8 @@ const StudentSchema = new mongoose.Schema<StudentInterface>(
 
 // virtual
 StudentSchema.virtual('fullName').get(function () {
-  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+  const { firstName, middleName, lastName } = this.name;
+  return `${firstName} ${middleName ? middleName : ''} ${lastName}`;
 });
 
 // Query Middleware
@@ -162,12 +163,6 @@ StudentSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
   next();
 });
-
-//creating a custom static method
-StudentSchema.statics.isUserExists = async function (id: string) {
-  const existingUser = await Student.findOne({ id });
-  return existingUser;
-};
 
 export const Student = mongoose.model<StudentInterface>(
   'Student',

@@ -93,28 +93,31 @@ const UpdateStudent = z.object({
           .optional(),
       })
       .optional(),
-    localGuardian: z.object({
-      name: z
-        .string({
-          invalid_type_error: 'Local guardian name must be a string',
-        })
-        .optional(),
-      occupation: z
-        .string({
-          invalid_type_error: 'Local guardian occupation must be a string',
-        })
-        .optional(),
-      contactNo: z
-        .string({
-          invalid_type_error: 'Local guardian contact number must be a string',
-        })
-        .optional(),
-      address: z
-        .string({
-          invalid_type_error: 'Local guardian address must be a string',
-        })
-        .optional(),
-    }),
+    localGuardian: z
+      .object({
+        name: z
+          .string({
+            invalid_type_error: 'Local guardian name must be a string',
+          })
+          .optional(),
+        occupation: z
+          .string({
+            invalid_type_error: 'Local guardian occupation must be a string',
+          })
+          .optional(),
+        contactNo: z
+          .string({
+            invalid_type_error:
+              'Local guardian contact number must be a string',
+          })
+          .optional(),
+        address: z
+          .string({
+            invalid_type_error: 'Local guardian address must be a string',
+          })
+          .optional(),
+      })
+      .optional(),
   }),
 });
 
