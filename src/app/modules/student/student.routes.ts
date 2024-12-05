@@ -5,4 +5,6 @@ const router = express.Router();
 
 router.get('/', StudentController.GetStudents);
 
+router.route('/:id').get(StudentController.GetStudentById);
+
 export const StudentRoutes = router;

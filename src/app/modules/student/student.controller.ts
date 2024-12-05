@@ -14,6 +14,18 @@ const GetStudents = catchAsync(async (req, res) => {
   });
 });
 
-const StudentController = { GetStudents };
+const GetStudentById = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await StudentService.GetStudentById(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student fetched successfully',
+    data: result,
+  });
+});
+
+const StudentController = { GetStudents, GetStudentById };
 
 export default StudentController;
