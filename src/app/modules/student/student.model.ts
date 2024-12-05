@@ -88,14 +88,17 @@ const StudentSchema = new mongoose.Schema<StudentInterface>(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     contactNo: {
       type: String,
       required: true,
+      unique: true,
     },
     emergencyContactNo: {
       type: String,
       required: true,
+      unique: true,
     },
     bloodGroup: {
       type: String,
@@ -142,7 +145,7 @@ const StudentSchema = new mongoose.Schema<StudentInterface>(
 
 // virtual
 StudentSchema.virtual('fullName').get(function () {
-  return this.name.firstName + this.name.middleName + this.name.lastName;
+  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
 
 // Query Middleware

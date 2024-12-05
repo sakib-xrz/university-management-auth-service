@@ -6,7 +6,8 @@ const CreateStudent = z.object({
       .string({
         invalid_type_error: 'Password must be a string',
       })
-      .min(6, 'Password must be at least 6 characters long'),
+      .min(6, 'Password must be at least 6 characters long')
+      .optional(),
     student: z.object({
       name: z.object(
         {

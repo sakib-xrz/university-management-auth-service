@@ -4,21 +4,18 @@ import { AcademicSemester } from './academicSemester.model';
 import { AcademicSemesterInterface } from './academicSemester.interface';
 import AcademicSemesterConstants from './academicSemester.constant';
 
-const CreateAcademicSemester = async (
-  academicSemesterData: AcademicSemesterInterface,
-) => {
+const CreateAcademicSemester = async (payload: AcademicSemesterInterface) => {
   if (
-    academicSemesterData.name &&
-    AcademicSemesterConstants.AcademicSemesterNameCodeMapper[
-      academicSemesterData.name
-    ] !== academicSemesterData.code
+    payload.name &&
+    AcademicSemesterConstants.AcademicSemesterNameCodeMapper[payload.name] !==
+      payload.code
   ) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       "Academic Semester name doesn't match with the code",
     );
   }
-  const result = await AcademicSemester.create(academicSemesterData);
+  const result = await AcademicSemester.create(payload);
   return result;
 };
 
@@ -37,7 +34,7 @@ const GetAcademicSemesterById = async (academicSemesterId: string) => {
 
 const UpdateAcademicSemester = async (
   academicSemesterId: string,
-  academicSemesterData: Partial<AcademicSemesterInterface>,
+  payload: Partial<AcademicSemesterInterface>,
 ) => {
   const academicSemester = await AcademicSemester.findById(academicSemesterId);
   if (!academicSemester) {
@@ -45,10 +42,9 @@ const UpdateAcademicSemester = async (
   }
 
   if (
-    academicSemesterData.name &&
-    AcademicSemesterConstants.AcademicSemesterNameCodeMapper[
-      academicSemesterData.name
-    ] !== academicSemesterData.code
+    payload.name &&
+    AcademicSemesterConstants.AcademicSemesterNameCodeMapper[payload.name] !==
+      payload.code
   ) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
@@ -58,7 +54,7 @@ const UpdateAcademicSemester = async (
 
   const result = await AcademicSemester.findByIdAndUpdate(
     academicSemesterId,
-    academicSemesterData,
+    payload,
     { new: true, runValidators: true },
   );
   return result;
