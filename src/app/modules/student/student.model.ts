@@ -98,7 +98,6 @@ const StudentSchema = new mongoose.Schema<StudentInterface>(
     emergencyContactNo: {
       type: String,
       required: true,
-      unique: true,
     },
     bloodGroup: {
       type: String,
