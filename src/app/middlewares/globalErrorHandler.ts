@@ -3,27 +3,32 @@
 
 import { ErrorRequestHandler } from 'express';
 import httpStatus from 'http-status';
-
-type ErrorSourcesType = {
-  message: string;
-  path: string;
-}[];
+import { ZodError } from 'zod';
+import handelZodError from '../errors/handelZodError';
+import { ErrorSourcesType } from '../interface/error';
 
 const globalErrorHandler: ErrorRequestHandler = (err, _req, res, next) => {
-  const statusCode = httpStatus.INTERNAL_SERVER_ERROR;
-  const message = 'Something went wrong!';
-  const errorSources: ErrorSourcesType = [
+  let statusCode: number = httpStatus.INTERNAL_SERVER_ERROR;
+  let message: string = 'Something went wrong!';
+  let errorSources: ErrorSourcesType = [
     {
       message: 'Something went wrong!',
       path: '',
     },
   ];
 
+  if (err instanceof ZodError) {
+    const simplifiedError = handelZodError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  }
+
   res.status(statusCode).json({
     success: false,
     message,
     errorSources,
-    finalError: err,
+    stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack,
   });
 };
 
