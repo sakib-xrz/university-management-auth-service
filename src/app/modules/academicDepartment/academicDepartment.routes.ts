@@ -8,7 +8,7 @@ const router = express.Router();
 router
   .route('/')
   .post(
-    // validateRequest(AcademicDepartmentValidation.CreateAcademicDepartment),
+    validateRequest(AcademicDepartmentValidation.CreateAcademicDepartment),
     AcademicDepartmentController.CreateAcademicDepartment,
   )
   .get(AcademicDepartmentController.GetAcademicDepartments);
