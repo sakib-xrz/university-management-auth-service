@@ -10,6 +10,15 @@ router
   .post(
     validateRequest(AcademicFacultyValidation.CreateAcademicFaculty),
     AcademicFacultyController.CreateAcademicFaculty,
+  )
+  .get(AcademicFacultyController.GetAcademicFaculties);
+
+router
+  .route('/:id')
+  .get(AcademicFacultyController.GetAcademicFaculty)
+  .patch(
+    validateRequest(AcademicFacultyValidation.UpdateAcademicFaculty),
+    AcademicFacultyController.UpdateAcademicFaculty,
   );
 
 export const AcademicFacultyRoutes = router;
