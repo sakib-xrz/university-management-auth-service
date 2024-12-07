@@ -14,7 +14,7 @@ const handelCastError = (
 
   return {
     statusCode: httpStatus.BAD_REQUEST,
-    message: 'Cast Error!',
+    message: 'Invalid Requested Data',
     errorSources,
   };
 };

@@ -10,12 +10,12 @@ import handelValidationError from '../errors/handleValidationError';
 import handelCastError from '../errors/handelCastError';
 
 const globalErrorHandler: ErrorRequestHandler = (err, _req, res, next) => {
-  let statusCode: number = httpStatus.INTERNAL_SERVER_ERROR;
-  let message: string = 'Something went wrong!';
+  let statusCode: number = err.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
+  let message: string = err.message || 'Something went wrong!';
   let errorSources: ErrorSourcesType = [
     {
-      message: 'Something went wrong!',
-      path: '',
+      message: err.message || 'Something went wrong!',
+      path: err?.path || '',
     },
   ];
 
