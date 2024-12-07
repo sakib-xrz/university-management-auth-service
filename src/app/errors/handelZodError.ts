@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
 import { ZodError, ZodIssue } from 'zod';
-import { ErrorSourcesType } from '../interface/error';
+import { ErrorSourcesType, GenericErrorResponseType } from '../interface/error';
 
-const handelZodError = (err: ZodError) => {
+const handelZodError = (err: ZodError): GenericErrorResponseType => {
   const statusCode = httpStatus.BAD_REQUEST;
   const message = 'Validation Error!';
   const errorSources: ErrorSourcesType = err.issues.map((issue: ZodIssue) => {
