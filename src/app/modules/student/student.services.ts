@@ -4,10 +4,32 @@ import { Student } from './student.model';
 import { StudentInterface } from './student.interface';
 import mongoose from 'mongoose';
 import { User } from '../user/user.model';
+import QueryBuilder from '../../builder/QueryBuilder';
+import StudentConstants from './student.constant';
 
-const GetStudents = async () => {
-  const students = await Student.find();
-  return students;
+const GetStudents = async (query: Record<string, unknown>) => {
+  const studentQuery = new QueryBuilder(
+    Student.find().populate('admissionSemester'),
+    query,
+  )
+    .search(StudentConstants.StudentSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const students = await studentQuery.modelQuery.exec();
+  const total = await studentQuery.getCountQuery();
+  const { page, limit } = studentQuery.getPaginationInfo();
+
+  return {
+    data: students,
+    meta: {
+      total,
+      page,
+      limit,
+    },
+  };
 };
 
 const GetStudentById = async (id: string) => {
