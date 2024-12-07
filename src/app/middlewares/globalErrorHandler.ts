@@ -7,6 +7,7 @@ import { ZodError } from 'zod';
 import handelZodError from '../errors/handelZodError';
 import { ErrorSourcesType } from '../interface/error';
 import handelValidationError from '../errors/handleValidationError';
+import handelCastError from '../errors/handelCastError';
 
 const globalErrorHandler: ErrorRequestHandler = (err, _req, res, next) => {
   let statusCode: number = httpStatus.INTERNAL_SERVER_ERROR;
@@ -25,6 +26,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, _req, res, next) => {
     errorSources = simplifiedError?.errorSources;
   } else if (err?.name === 'ValidationError') {
     const simplifiedError = handelValidationError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  } else if (err?.name === 'CastError') {
+    const simplifiedError = handelCastError(err);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSources = simplifiedError?.errorSources;
