@@ -8,6 +8,8 @@ import handelZodError from '../errors/handelZodError';
 import { ErrorSourcesType } from '../interface/error';
 import handelValidationError from '../errors/handleValidationError';
 import handelCastError from '../errors/handelCastError';
+import handleDuplicateError from '../errors/handleDuplicateError';
+import AppError from '../errors/AppError';
 
 const globalErrorHandler: ErrorRequestHandler = (err, _req, res, next) => {
   let statusCode: number = err.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
@@ -34,6 +36,27 @@ const globalErrorHandler: ErrorRequestHandler = (err, _req, res, next) => {
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSources = simplifiedError?.errorSources;
+  } else if (err?.code === 11000) {
+    const simplifiedError = handleDuplicateError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  } else if (err instanceof Error) {
+    errorSources = [
+      {
+        message: err.message,
+        path: '',
+      },
+    ];
+  } else if (err instanceof AppError) {
+    statusCode = err.statusCode;
+    message = err.message;
+    errorSources = [
+      {
+        message: err.message,
+        path: '',
+      },
+    ];
   }
 
   res.status(statusCode).json({
