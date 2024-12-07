@@ -3,8 +3,6 @@ import { ZodError, ZodIssue } from 'zod';
 import { ErrorSourcesType, GenericErrorResponseType } from '../interface/error';
 
 const handelZodError = (err: ZodError): GenericErrorResponseType => {
-  const statusCode = httpStatus.BAD_REQUEST;
-  const message = 'Validation Error!';
   const errorSources: ErrorSourcesType = err.issues.map((issue: ZodIssue) => {
     return {
       message: issue.message,
@@ -13,8 +11,8 @@ const handelZodError = (err: ZodError): GenericErrorResponseType => {
   });
 
   return {
-    statusCode,
-    message,
+    statusCode: httpStatus.BAD_REQUEST,
+    message: 'Validation Error!',
     errorSources,
   };
 };
