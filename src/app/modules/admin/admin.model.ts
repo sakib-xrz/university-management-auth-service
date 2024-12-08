@@ -26,10 +26,6 @@ const AdminSchema = new mongoose.Schema<AdminInterface>(
         required: true,
       },
     },
-    designation: {
-      type: String,
-      required: true,
-    },
     gender: {
       type: String,
       enum: ['MALE', 'FEMALE', 'OTHER'],

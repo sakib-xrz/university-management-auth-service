@@ -8,7 +8,6 @@ export interface AdminInterface {
     middleName?: string;
     lastName: string;
   };
-  designation: string;
   gender: 'MALE' | 'FEMALE' | 'OTHER';
   dateOfBirth?: string;
   email: string;
