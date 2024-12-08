@@ -11,8 +11,14 @@ import { Student } from '../student/student.model';
 import { FacultyInterface } from '../faculty/faculty.interface';
 import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 import { Faculty } from '../faculty/faculty.model';
+import { AdminInterface } from '../admin/admin.interface';
+import { Admin } from '../admin/admin.model';
 
-const { default_student_password, default_faculty_password } = config;
+const {
+  default_student_password,
+  default_faculty_password,
+  default_admin_password,
+} = config;
 
 const CreateStudent = async (password: string, payload: StudentInterface) => {
   const academicSemester = await AcademicSemester.findById(
@@ -121,6 +127,52 @@ const CreateFaculty = async (password: string, payload: FacultyInterface) => {
   }
 };
 
-const UserService = { CreateStudent, CreateFaculty };
+const CreateAdmin = async (password: string, payload: AdminInterface) => {
+  const adminId = await UserUtils.generateAdminId();
+
+  const userData: Partial<UserInterface> = {};
+
+  userData.password = password || default_admin_password;
+  userData.role = 'ADMIN';
+  userData.id = adminId;
+
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    const user = await User.create([userData], { session });
+
+    if (!user.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
+    }
+
+    const admin = await Admin.create(
+      [
+        {
+          ...payload,
+          id: adminId,
+          user: user[0]._id,
+        },
+      ],
+      { session },
+    );
+
+    if (!admin.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+    }
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return admin[0];
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
+  }
+};
+
+const UserService = { CreateStudent, CreateFaculty, CreateAdmin };
 
 export default UserService;

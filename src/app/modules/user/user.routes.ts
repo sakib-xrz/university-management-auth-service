@@ -17,4 +17,10 @@ router.post(
   UserController.CreateFaculty,
 );
 
+router.post(
+  '/create-admin',
+  validateRequest(UserValidation.CreateAdmin),
+  UserController.CreateAdmin,
+);
+
 export const UserRoutes = router;
