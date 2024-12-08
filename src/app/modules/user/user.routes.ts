@@ -11,4 +11,10 @@ router.post(
   UserController.CreateStudent,
 );
 
+router.post(
+  '/create-faculty',
+  validateRequest(UserValidation.CreateFaculty),
+  UserController.CreateFaculty,
+);
+
 export const UserRoutes = router;
