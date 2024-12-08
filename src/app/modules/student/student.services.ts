@@ -132,11 +132,10 @@ const DeleteStudent = async (id: string) => {
 
     await session.commitTransaction();
     session.endSession();
-  } catch (error: unknown) {
+  } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    const errorMessage = (error as Error).message || 'Internal server error';
-    throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, errorMessage);
+    throw error;
   }
 };
 
