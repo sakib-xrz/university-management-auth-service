@@ -57,11 +57,10 @@ const CreateStudent = async (password: string, payload: StudentInterface) => {
     session.endSession();
 
     return student[0];
-  } catch (error: unknown) {
+  } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    const errorMessage = (error as Error).message || 'Internal server error';
-    throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, errorMessage);
+    throw error;
   }
 };
 
