@@ -124,6 +124,10 @@ const CreateStudent = z.object({
         required_error: 'Admission semester is required',
         invalid_type_error: 'Admission semester must be a string',
       }),
+      academicDepartment: z.string({
+        required_error: 'Academic department is required',
+        invalid_type_error: 'Academic department must be a string',
+      }),
     }),
   }),
 });

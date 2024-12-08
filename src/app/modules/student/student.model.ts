@@ -128,6 +128,11 @@ const StudentSchema = new mongoose.Schema<StudentInterface>(
       ref: 'AcademicSemester',
       required: true,
     },
+    academicDepartment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'AcademicDepartment',
+      required: true,
+    },
     isDeleted: {
       type: Boolean,
       default: false,

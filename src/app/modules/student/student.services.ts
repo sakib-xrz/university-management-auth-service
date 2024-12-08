@@ -9,7 +9,14 @@ import StudentConstants from './student.constant';
 
 const GetStudents = async (query: Record<string, unknown>) => {
   const studentQuery = new QueryBuilder(
-    Student.find().populate('admissionSemester'),
+    Student.find()
+      .populate('admissionSemester')
+      .populate({
+        path: 'academicDepartment',
+        populate: {
+          path: 'faculty',
+        },
+      }),
     query,
   )
     .search(StudentConstants.StudentSearchableFields)
