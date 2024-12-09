@@ -50,4 +50,20 @@ const CourseSchema = new mongoose.Schema<CourseInterface>(
   },
 );
 
+// Query Middleware
+CourseSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+CourseSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+CourseSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
+
 export const Course = mongoose.model<CourseInterface>('Course', CourseSchema);

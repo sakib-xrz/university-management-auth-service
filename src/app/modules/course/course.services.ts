@@ -14,10 +14,21 @@ const CreateCourse = async (payload: CourseInterface) => {
       if (!course) {
         throw new AppError(
           httpStatus.BAD_REQUEST,
-          `Prerequisite course with id ${payload.prerequisiteCourses[i].course} not found`,
+          `Prerequisite course with id "${payload.prerequisiteCourses[i].course}" not found`,
         );
       }
     }
+  }
+
+  const existingCourse = await Course.findOne({
+    title: payload.title,
+  });
+
+  if (existingCourse) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `Course with title '${payload.title}' already exists`,
+    );
   }
 
   const course = await Course.create(payload);
