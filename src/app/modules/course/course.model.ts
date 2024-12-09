@@ -1,5 +1,17 @@
 import mongoose from 'mongoose';
-import { CourseInterface } from './course.interface';
+import { CourseInterface, PrerequisiteCourseType } from './course.interface';
+
+const PrerequisiteCourseSchema = new mongoose.Schema<PrerequisiteCourseType>({
+  course: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Course',
+    required: true,
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const CourseSchema = new mongoose.Schema<CourseInterface>(
   {
@@ -24,19 +36,10 @@ const CourseSchema = new mongoose.Schema<CourseInterface>(
       type: Boolean,
       default: false,
     },
-    prerequisiteCourses: [
-      {
-        course: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Course',
-          required: true,
-        },
-        isDeleted: {
-          type: Boolean,
-          default: false,
-        },
-      },
-    ],
+    prerequisiteCourses: {
+      type: [PrerequisiteCourseSchema],
+      default: [],
+    },
   },
   {
     timestamps: true,

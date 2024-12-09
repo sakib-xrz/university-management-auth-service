@@ -11,5 +11,5 @@ export interface CourseInterface {
   code: number;
   credits: number;
   isDeleted: boolean;
-  prerequisiteCourses: PrerequisiteCourseType[];
+  prerequisiteCourses?: PrerequisiteCourseType[];
 }
