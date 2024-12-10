@@ -61,7 +61,7 @@ const DeleteCourse = catchAsync(async (req, res) => {
 const AssignFacultyToCourse = catchAsync(async (req, res) => {
   const result = await CourseService.AssignFacultyToCourse(
     req.params.id,
-    req.body.facultyIds,
+    req.body.faculties,
   );
 
   sendResponse(res, {
