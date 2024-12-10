@@ -17,10 +17,12 @@ const CreateCourse = z.object({
       required_error: 'Course code is required',
       invalid_type_error: 'Course code must be a number',
     }),
-    credits: z.number({
-      required_error: 'Course credits is required',
-      invalid_type_error: 'Course credits must be a number',
-    }),
+    credits: z
+      .number({
+        required_error: 'Course credits is required',
+        invalid_type_error: 'Course credits must be a number',
+      })
+      .nonnegative('Course credits must be zero or a positive number'),
     prerequisiteCourses: z
       .array(
         z.object({
@@ -34,6 +36,49 @@ const CreateCourse = z.object({
   }),
 });
 
-const CourseValidation = { CreateCourse };
+const UpdateCourse = z.object({
+  body: z.object({
+    title: z
+      .string({
+        invalid_type_error: 'Course title must be a string',
+      })
+      .min(3, 'Course title is too short')
+      .max(255, 'Course title is too long')
+      .optional(),
+    prefix: z
+      .string({
+        invalid_type_error: 'Course prefix must be a string',
+      })
+      .optional(),
+    code: z
+      .number({
+        invalid_type_error: 'Course code must be a number',
+      })
+      .optional(),
+    credits: z
+      .number({
+        required_error: 'Course credits is required',
+        invalid_type_error: 'Course credits must be a number',
+      })
+      .nonnegative('Course credits must be zero or a positive number')
+      .optional(),
+    prerequisiteCourses: z
+      .array(
+        z.object({
+          course: z.string({
+            required_error: 'Prerequisite course is required',
+            invalid_type_error: 'Prerequisite course must be a string',
+          }),
+          isDeleted: z.boolean({
+            required_error: 'isDeleted is required',
+            invalid_type_error: 'isDeleted must be a boolean',
+          }),
+        }),
+      )
+      .optional(),
+  }),
+});
+
+const CourseValidation = { CreateCourse, UpdateCourse };
 
 export default CourseValidation;

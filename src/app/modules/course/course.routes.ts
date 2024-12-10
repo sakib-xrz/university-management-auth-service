@@ -16,6 +16,10 @@ router
 router
   .route('/:id')
   .get(CourseController.GetCourseById)
+  .patch(
+    validateRequest(CourseValidation.UpdateCourse),
+    CourseController.UpdateCourse,
+  )
   .delete(CourseController.DeleteCourse);
 
 export const CourseRoutes = router;

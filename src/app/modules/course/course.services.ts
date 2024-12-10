@@ -4,6 +4,7 @@ import { Course } from './course.model';
 import { CourseInterface } from './course.interface';
 import QueryBuilder from '../../builder/QueryBuilder';
 import CourseConstants from './course.constant';
+import mongoose from 'mongoose';
 
 const CreateCourse = async (payload: CourseInterface) => {
   if (payload.prerequisiteCourses && payload.prerequisiteCourses.length) {
@@ -81,64 +82,90 @@ const UpdateCourse = async (id: string, payload: Partial<CourseInterface>) => {
 
   const { prerequisiteCourses, ...restUpdatedFields } = payload;
 
-  await Course.findByIdAndUpdate(
-    id,
-    {
-      ...restUpdatedFields,
-    },
-    {
-      new: true,
-      runValidators: true,
-    },
-  );
+  const session = await mongoose.startSession();
 
-  if (prerequisiteCourses && prerequisiteCourses.length) {
-    const deletablePrerequisiteCourses = prerequisiteCourses
-      .filter((el) => el.course && el.isDeleted)
-      .map((el) => el.course);
+  try {
+    session.startTransaction();
 
-    const creatablePrerequisiteCourses = prerequisiteCourses
-      .filter((el) => el.course && !el.isDeleted)
-      .map((el) => el.course);
-
-    if (deletablePrerequisiteCourses.length) {
-      await Course.findByIdAndUpdate(id, {
-        $pull: {
-          prerequisiteCourses: {
-            course: { $in: deletablePrerequisiteCourses },
-          },
-        },
-      });
-    }
-
-    if (creatablePrerequisiteCourses.length) {
-      for (let i = 0; i < creatablePrerequisiteCourses.length; i++) {
-        const course = await Course.findById(creatablePrerequisiteCourses[i]);
-        if (!course) {
-          throw new AppError(
-            httpStatus.BAD_REQUEST,
-            `Prerequisite course with id "${creatablePrerequisiteCourses[i]}" not found`,
-          );
-        }
-      }
-
-      await Course.findByIdAndUpdate(id, {
-        $addToSet: {
-          prerequisiteCourses: {
-            $each: creatablePrerequisiteCourses.map((el) => ({
-              course: el,
-            })),
-          },
-        },
-      });
-    }
-
-    const updatedCourse = await Course.findById(id).populate(
-      'prerequisiteCourses.course',
+    await Course.findByIdAndUpdate(
+      id,
+      {
+        ...restUpdatedFields,
+      },
+      {
+        new: true,
+        runValidators: true,
+        session,
+      },
     );
 
-    return updatedCourse;
+    if (prerequisiteCourses && prerequisiteCourses.length) {
+      const deletablePrerequisiteCourses = prerequisiteCourses
+        .filter((el) => el.course && el.isDeleted)
+        .map((el) => el.course);
+
+      const creatablePrerequisiteCourses = prerequisiteCourses
+        .filter((el) => el.course && !el.isDeleted)
+        .map((el) => el.course);
+
+      if (deletablePrerequisiteCourses.length) {
+        await Course.findByIdAndUpdate(
+          id,
+          {
+            $pull: {
+              prerequisiteCourses: {
+                course: { $in: deletablePrerequisiteCourses },
+              },
+            },
+          },
+          {
+            session,
+          },
+        );
+      }
+
+      if (creatablePrerequisiteCourses.length) {
+        for (let i = 0; i < creatablePrerequisiteCourses.length; i++) {
+          const course = await Course.findById(creatablePrerequisiteCourses[i]);
+          if (!course) {
+            throw new AppError(
+              httpStatus.BAD_REQUEST,
+              `Prerequisite course with id "${creatablePrerequisiteCourses[i]}" not found`,
+            );
+          }
+        }
+
+        await Course.findByIdAndUpdate(
+          id,
+          {
+            $addToSet: {
+              prerequisiteCourses: {
+                $each: creatablePrerequisiteCourses.map((el) => ({
+                  course: el,
+                })),
+              },
+            },
+          },
+          {
+            session,
+          },
+        );
+      }
+    }
+
+    await session.commitTransaction();
+    session.endSession();
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
   }
+
+  const updatedCourse = await Course.findById(id).populate(
+    'prerequisiteCourses.course',
+  );
+
+  return updatedCourse;
 };
 
 const DeleteCourse = async (id: string) => {
