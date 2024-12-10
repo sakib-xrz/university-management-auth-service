@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
-import { Course } from './course.model';
-import { CourseInterface } from './course.interface';
+import { Course, CourseFaculty } from './course.model';
+import { CourseFacultyType, CourseInterface } from './course.interface';
 import QueryBuilder from '../../builder/QueryBuilder';
 import CourseConstants from './course.constant';
 import mongoose from 'mongoose';
@@ -183,12 +183,42 @@ const DeleteCourse = async (id: string) => {
   }
 };
 
+const AssignFacultyToCourse = async (
+  id: string,
+  payload: Partial<CourseFacultyType>,
+) => {
+  const course = await Course.findById(id);
+
+  if (!course) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Course not found');
+  }
+
+  const result = await CourseFaculty.findByIdAndUpdate(
+    id,
+    {
+      $addToSet: {
+        faculties: {
+          $each: payload,
+        },
+      },
+    },
+    {
+      upsert: true,
+      new: true,
+      runValidators: true,
+    },
+  );
+
+  return result;
+};
+
 const CourseService = {
   CreateCourse,
   GetCourses,
   GetCourseById,
   UpdateCourse,
   DeleteCourse,
+  AssignFacultyToCourse,
 };
 
 export default CourseService;

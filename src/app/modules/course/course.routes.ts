@@ -22,4 +22,6 @@ router
   )
   .delete(CourseController.DeleteCourse);
 
+router.put('/:id/assign-faculty', CourseController.AssignFacultyToCourse);
+
 export const CourseRoutes = router;
