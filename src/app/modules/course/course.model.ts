@@ -1,5 +1,9 @@
 import mongoose from 'mongoose';
-import { CourseInterface, PrerequisiteCourseType } from './course.interface';
+import {
+  CourseFacultyType,
+  CourseInterface,
+  PrerequisiteCourseType,
+} from './course.interface';
 
 const PrerequisiteCourseSchema = new mongoose.Schema<PrerequisiteCourseType>({
   course: {
@@ -12,6 +16,34 @@ const PrerequisiteCourseSchema = new mongoose.Schema<PrerequisiteCourseType>({
     default: false,
   },
 });
+
+const CourseFacultySchema = new mongoose.Schema<CourseFacultyType>(
+  {
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Course',
+      unique: true,
+      required: true,
+    },
+    faculties: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: 'Faculty',
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+    toJSON: {
+      virtuals: true,
+    },
+  },
+);
+
+export const CourseFaculty = mongoose.model<CourseFacultyType>(
+  'CourseFaculty',
+  CourseFacultySchema,
+);
 
 const CourseSchema = new mongoose.Schema<CourseInterface>(
   {
