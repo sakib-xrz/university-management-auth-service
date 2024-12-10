@@ -79,7 +79,7 @@ const UpdateCourse = z.object({
   }),
 });
 
-const AssignFaculty = z.object({
+const FacultyWithCourse = z.object({
   body: z.object({
     faculties: z.array(
       z.string({
@@ -90,6 +90,6 @@ const AssignFaculty = z.object({
   }),
 });
 
-const CourseValidation = { CreateCourse, UpdateCourse, AssignFaculty };
+const CourseValidation = { CreateCourse, UpdateCourse, FacultyWithCourse };
 
 export default CourseValidation;

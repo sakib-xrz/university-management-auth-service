@@ -24,8 +24,14 @@ router
 
 router.put(
   '/:id/assign-faculty',
-  validateRequest(CourseValidation.AssignFaculty),
+  validateRequest(CourseValidation.FacultyWithCourse),
   CourseController.AssignFacultyToCourse,
+);
+
+router.patch(
+  '/:id/remove-faculty',
+  validateRequest(CourseValidation.FacultyWithCourse),
+  CourseController.RemoveFacultyFromCourse,
 );
 
 export const CourseRoutes = router;

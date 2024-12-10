@@ -213,6 +213,34 @@ const AssignFacultyToCourse = async (
   return result;
 };
 
+const RemoveFacultyFromCourse = async (
+  id: string,
+  payload: Partial<CourseFacultyType>,
+) => {
+  const course = await Course.findById(id);
+
+  if (!course) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Course not found');
+  }
+
+  const result = await CourseFaculty.findByIdAndUpdate(
+    id,
+    {
+      $pull: {
+        faculties: {
+          $in: payload,
+        },
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+
+  return result;
+};
+
 const CourseService = {
   CreateCourse,
   GetCourses,
@@ -220,6 +248,7 @@ const CourseService = {
   UpdateCourse,
   DeleteCourse,
   AssignFacultyToCourse,
+  RemoveFacultyFromCourse,
 };
 
 export default CourseService;

@@ -72,6 +72,19 @@ const AssignFacultyToCourse = catchAsync(async (req, res) => {
   });
 });
 
+const RemoveFacultyFromCourse = catchAsync(async (req, res) => {
+  await CourseService.RemoveFacultyFromCourse(
+    req.params.id,
+    req.body.faculties,
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.NO_CONTENT,
+    message: 'Faculty removed from course successfully',
+  });
+});
+
 const CourseController = {
   CreateCourse,
   GetCourses,
@@ -79,6 +92,7 @@ const CourseController = {
   UpdateCourse,
   DeleteCourse,
   AssignFacultyToCourse,
+  RemoveFacultyFromCourse,
 };
 
 export default CourseController;
