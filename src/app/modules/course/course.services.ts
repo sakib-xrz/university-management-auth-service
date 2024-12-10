@@ -197,6 +197,7 @@ const AssignFacultyToCourse = async (
     id,
     {
       $addToSet: {
+        course: id,
         faculties: {
           $each: payload,
         },
