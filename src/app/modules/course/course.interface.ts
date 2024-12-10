@@ -19,6 +19,11 @@ export type PrerequisiteCourseType = {
   isDeleted: boolean;
 };
 
+export type CourseFacultyType = {
+  course: Types.ObjectId;
+  faculties: [Types.ObjectId];
+};
+
 export interface CourseInterface {
   title: string;
   prefix: string;
