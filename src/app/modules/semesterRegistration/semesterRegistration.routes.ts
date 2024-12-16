@@ -10,6 +10,7 @@ router
   .post(
     validateRequest(SemesterRegistrationValidation.CreateSchema),
     SemesterRegistrationController.CreateSemesterRegistration,
-  );
+  )
+  .get(SemesterRegistrationController.GetAllSemesterRegistrations);
 
 export const SemesterRegistrationRoutes = router;
