@@ -15,6 +15,10 @@ router
 
 router
   .route('/:id')
-  .get(SemesterRegistrationController.GetSemesterRegistration);
+  .get(SemesterRegistrationController.GetSemesterRegistration)
+  .patch(
+    validateRequest(SemesterRegistrationValidation.UpdateSchema),
+    SemesterRegistrationController.UpdateSemesterRegistration,
+  );
 
 export const SemesterRegistrationRoutes = router;

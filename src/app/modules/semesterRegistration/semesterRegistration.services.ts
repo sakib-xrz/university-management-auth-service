@@ -79,10 +79,61 @@ const GetSemesterRegistration = async (id: string) => {
   return semesterRegistration;
 };
 
+const UpdateSemesterRegistration = async (
+  id: string,
+  payload: Partial<SemesterRegistrationInterface>,
+) => {
+  const semesterRegistration = await SemesterRegistration.findById(id);
+
+  if (!semesterRegistration) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Semester registration not found');
+  }
+
+  if (semesterRegistration.status === 'ENDED') {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Semester registration has already ended',
+    );
+  }
+
+  if (payload.status) {
+    switch (semesterRegistration.status) {
+      case 'UPCOMING': {
+        if (payload.status === 'ENDED') {
+          throw new AppError(
+            httpStatus.BAD_REQUEST,
+            'Semester registration cannot be ended directly from upcoming',
+          );
+        }
+        break;
+      }
+      case 'ONGOING': {
+        if (payload.status === 'UPCOMING') {
+          throw new AppError(
+            httpStatus.BAD_REQUEST,
+            'Semester registration cannot be moved to upcoming from ongoing',
+          );
+        }
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
+  const result = await SemesterRegistration.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+
+  return result;
+};
+
 const SemesterRegistrationService = {
   CreateSemesterRegistration,
   GetAllSemesterRegistrations,
   GetSemesterRegistration,
+  UpdateSemesterRegistration,
 };
 
 export default SemesterRegistrationService;
