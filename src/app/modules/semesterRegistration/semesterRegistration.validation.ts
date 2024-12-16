@@ -45,6 +45,46 @@ const CreateSchema = z.object({
   }),
 });
 
-const SemesterRegistrationValidation = { CreateSchema };
+const UpdateSchema = z.object({
+  body: z.object({
+    status: z
+      .enum(
+        [...(SemesterRegistrationConstants.Status as [string, ...string[]])],
+        {
+          message:
+            'Status must be one of the following values: UPCOMING, ONGOING, ENDED',
+        },
+      )
+      .optional(),
+    startDateTime: z
+      .string({
+        invalid_type_error: 'Start date time must be a string',
+      })
+      .datetime({
+        message: 'Start date time must be a valid date time',
+      })
+      .optional(),
+    endDateTime: z
+      .string({
+        invalid_type_error: 'End date time must be a string',
+      })
+      .datetime({
+        message: 'End date time must be a valid date time',
+      })
+      .optional(),
+    minCredit: z
+      .number({
+        invalid_type_error: 'Min credit must be a number',
+      })
+      .optional(),
+    maxCredit: z
+      .number({
+        invalid_type_error: 'Max credit must be a number',
+      })
+      .optional(),
+  }),
+});
+
+const SemesterRegistrationValidation = { CreateSchema, UpdateSchema };
 
 export default SemesterRegistrationValidation;

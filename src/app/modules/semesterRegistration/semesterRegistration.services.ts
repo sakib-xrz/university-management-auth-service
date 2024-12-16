@@ -23,7 +23,19 @@ const CreateSemesterRegistration = async (
   if (isSemesterRegistrationExist) {
     throw new AppError(
       httpStatus.CONFLICT,
-      'Semester registration already exist',
+      'Semester registration already exists for this semester',
+    );
+  }
+
+  const isAnyUpcomingOrOngingSemesterRegistrationExist =
+    await SemesterRegistration.findOne({
+      status: { $in: ['UPCOMING', 'ONGOING'] },
+    });
+
+  if (isAnyUpcomingOrOngingSemesterRegistrationExist) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      `There is already an ${isAnyUpcomingOrOngingSemesterRegistrationExist.status} semester registration`,
     );
   }
 
