@@ -13,4 +13,8 @@ router
   )
   .get(SemesterRegistrationController.GetAllSemesterRegistrations);
 
+router
+  .route('/:id')
+  .get(SemesterRegistrationController.GetSemesterRegistration);
+
 export const SemesterRegistrationRoutes = router;

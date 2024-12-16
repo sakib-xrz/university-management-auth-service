@@ -56,9 +56,21 @@ const GetAllSemesterRegistrations = async (query: Record<string, unknown>) => {
   };
 };
 
+const GetSemesterRegistration = async (id: string) => {
+  const semesterRegistration =
+    await SemesterRegistration.findById(id).populate('academicSemester');
+
+  if (!semesterRegistration) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Semester registration not found');
+  }
+
+  return semesterRegistration;
+};
+
 const SemesterRegistrationService = {
   CreateSemesterRegistration,
   GetAllSemesterRegistrations,
+  GetSemesterRegistration,
 };
 
 export default SemesterRegistrationService;
