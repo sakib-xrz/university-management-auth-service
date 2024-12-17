@@ -2,11 +2,11 @@ import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { SemesterRegistration } from '../semesterRegistration/semesterRegistration.model';
 import { OfferedCourseInterface } from './offeredCourse.interface';
-import { AcademicSemester } from '../academicSemester/academicSemester.model';
 import { AcademicFaculty } from '../academicFaculty/academicFaculty.model';
 import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 import { Course } from '../course/course.model';
 import { Faculty } from '../faculty/faculty.model';
+import { OfferedCourse } from './offeredCourse.model';
 
 const CreateOfferedCourse = async (payload: OfferedCourseInterface) => {
   const {
@@ -15,6 +15,7 @@ const CreateOfferedCourse = async (payload: OfferedCourseInterface) => {
     academicDepartment,
     course,
     faculty,
+    section,
   } = payload;
 
   const isSemesterRegistrationExist =
@@ -52,10 +53,38 @@ const CreateOfferedCourse = async (payload: OfferedCourseInterface) => {
     throw new AppError(httpStatus.NOT_FOUND, 'Faculty not found');
   }
 
-  // need to check if the department is under the faculty 
+  const isDepartmentExistOnFaculty = await AcademicDepartment.findOne({
+    _id: academicDepartment,
+    academicFaculty,
+  });
 
-  const isDepartmentExistOnFaculty = 
+  if (!isDepartmentExistOnFaculty) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      'Department not found under the faculty',
+    );
+  }
 
+  const isOfferedCourseExistWithSameSemesterCourseAndSection =
+    await OfferedCourse.findOne({
+      semesterRegistration,
+      course,
+      section,
+    });
+
+  if (isOfferedCourseExistWithSameSemesterCourseAndSection) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      'Offered Course already exist with same semester, course and section',
+    );
+  }
+
+  const result = await OfferedCourse.create({
+    ...payload,
+    academicSemester,
+  });
+
+  return result;
 };
 
 const OfferedCourseService = { CreateOfferedCourse };
