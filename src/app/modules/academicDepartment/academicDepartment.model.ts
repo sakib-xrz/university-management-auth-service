@@ -11,7 +11,7 @@ const AcademicDepartmentSchema =
         required: true,
         unique: true,
       },
-      faculty: {
+      academicFaculty: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'AcademicFaculty',
         required: true,

@@ -47,5 +47,5 @@ import mongoose from 'mongoose';
 
 export interface AcademicDepartmentInterface {
   name: string;
-  faculty: mongoose.Schema.Types.ObjectId;
+  academicFaculty: mongoose.Schema.Types.ObjectId;
 }

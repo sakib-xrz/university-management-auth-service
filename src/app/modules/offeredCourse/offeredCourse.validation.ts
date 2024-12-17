@@ -18,10 +18,6 @@ const CreateSchema = z.object({
         required_error: 'Semester registration id is required',
         invalid_type_error: 'Semester registration id must be a string',
       }),
-      academicSemester: z.string({
-        required_error: 'Academic semester id is required',
-        invalid_type_error: 'Academic semester id must be a string',
-      }),
       academicFaculty: z.string({
         required_error: 'Academic faculty id is required',
         invalid_type_error: 'Academic faculty id must be a string',

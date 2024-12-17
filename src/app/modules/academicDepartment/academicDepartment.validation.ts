@@ -6,7 +6,7 @@ const CreateAcademicDepartment = z.object({
       required_error: 'Academic Department name is required',
       invalid_type_error: 'Academic Department name must be a string',
     }),
-    faculty: z.string({
+    academicFaculty: z.string({
       required_error: 'Academic Faculty id is required',
       invalid_type_error: 'Academic Faculty id must be a string',
     }),
@@ -20,7 +20,7 @@ const UpdateAcademicDepartment = z.object({
         invalid_type_error: 'Academic Department name must be a string',
       })
       .optional(),
-    faculty: z
+    academicFaculty: z
       .string({
         invalid_type_error: 'Academic Faculty id must be a string',
       })
