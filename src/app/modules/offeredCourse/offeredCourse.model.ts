@@ -39,7 +39,7 @@ const OfferedCourseSchema = new mongoose.Schema<OfferedCourseInterface>(
       required: true,
     },
     section: {
-      type: Number,
+      type: String,
       required: true,
     },
     days: {

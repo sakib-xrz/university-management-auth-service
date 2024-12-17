@@ -10,7 +10,7 @@ export interface OfferedCourseInterface {
   course: Types.ObjectId;
   faculty: Types.ObjectId;
   maxCapacity: number;
-  section: number;
+  section: string;
   days: DaysType[];
   startTime: string;
   endTime: string;
